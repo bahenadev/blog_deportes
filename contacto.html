@@ -31,16 +31,27 @@
         </p>
       </section>
 
-      <section class="content-area">
-        <h3>Destacado del momento</h3>
-        <div class="card">
-          <img src="https://via.placeholder.com/400x200" alt="Futbol" />
-          <h4>Título de la Efeméride</h4>
-          <p>Descripción breve de lo que sucedió en esta fecha histórica...</p>
-          <a href="#" class="btn">Leer más</a>
+      <section id="contacto">
+    <h2>Contáctanos</h2>
+    <form action="/api/contacto" method="POST">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
         </div>
-      </section>
-    </main>
+        
+        <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+        </div>
+        
+        <button type="submit">Enviar Mensaje</button>
+    </form>
+</section>
 
     <footer>
       <p>&copy; 2026 Efemérides Futboleras - Proyecto Agile Scrum</p>
