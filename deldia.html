@@ -1,22 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Efemérides Futboleras | El Deporte Rey</title>
+    <title>Del Día | Efemérides Futboleras</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
       <div class="logo">
-        <h1>⚽ Efemérides <span class="highlight">Futbol</span></h1>
+        <h1>Efemérides <span class="highlight">Futbol</span></h1>
       </div>
       <nav>
         <ul>
           <li><a href="index.html">Inicio</a></li>
           <li><a href="deldia.html">Del Día</a></li>
           <li><a href="calendario.html">Calendario</a></li>
-          <li><a href="lamasvisto.html">Lo más visto</a></li>
+          <li><a href="lomasvisto.html">Lo más visto</a></li>
           <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </nav>
@@ -24,19 +24,18 @@
 
     <main>
       <section class="hero">
-        <h2>Bienvenidos al rincón de la historia</h2>
+        <h2>Lo que sucede hoy en la historia</h2>
         <p>
-          Revive los momentos que marcaron el fútbol mundial hoy, ayer y
-          siempre.
+          Explora los eventos y partidos que están marcando el calendario futbolístico en este preciso momento.
         </p>
       </section>
 
       <section class="content-area">
-        <h3>Destacado del momento</h3>
+        <h3>Efeméride en tiempo real</h3>
         <div class="card">
-          <img src="https://via.placeholder.com/400x200" alt="Futbol" />
-          <h4>Título de la Efeméride</h4>
-          <p>Descripción breve de lo que sucedió en esta fecha histórica...</p>
+          <img id="api-img" src="https://via.placeholder.com/400x200" alt="Futbol" />
+          <h4 id="api-titulo">Título de la Efeméride</h4>
+          <p id="api-desc">Descripción breve de lo que sucedió en esta fecha histórica...</p>
           <a href="#" class="btn">Leer más</a>
         </div>
       </section>
@@ -48,5 +47,29 @@
         <p>Hecho con pasión por el fútbol</p>
       </div>
     </footer>
+
+    <script>
+      const KEY = 'd7dc8245df1b91c9d5b489b8df33d2b6';
+      const FECHA = new Date().toISOString().split('T')[0];
+
+      async function inyectarDatos() {
+        try {
+          const r = await fetch(`https://v3.football.api-sports.io/fixtures?date=${FECHA}`, {
+            method: 'GET',
+            headers: { 'x-rapidapi-key': KEY, 'x-rapidapi-host': 'v3.football.api-sports.io' }
+          });
+          const d = await r.json();
+
+          if (d.response && d.response.length > 0) {
+            const p = d.response[0];
+            // Solo cambiamos el contenido interno, la estructura se queda igual
+            document.getElementById('api-titulo').innerText = `${p.teams.home.name} vs ${p.teams.away.name}`;
+            document.getElementById('api-desc').innerText = `Hoy se juega en la ${p.league.name}. Estadio: ${p.fixture.venue.name || 'N/A'}.`;
+            document.getElementById('api-img').src = p.league.logo;
+          }
+        } catch (e) { console.log("Error silencioso"); }
+      }
+      window.onload = inyectarDatos;
+    </script>
   </body>
 </html>
